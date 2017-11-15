@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.itsad.inventariovirtual.ItemActivity">
+
+    <Button
+        android:id="@+id/btnAdicionar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Adicionar"
+        android:onClick="addItem"/>
+    <Button
+        android:layout_toRightOf="@id/btnAdicionar"
+        android:id="@+id/btnMonitorar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Monitorar"
+ />
+    <ListView
+        android:layout_below="@id/btnAdicionar"
+        android:id="@+id/inventariosExistentes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.9"
+        ></ListView>
+
+</RelativeLayout>
