@@ -26,6 +26,7 @@ public class Conexao extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         try {
+            //db.execSQL(InventarioRepository.SCRIPT_TB_INVENTARIO + PessoaRepository.SCRIPT_TB_PESSOA + ItemRepository.SCRIPT_TB_ITEM);
             db.execSQL(InventarioRepository.SCRIPT_TB_INVENTARIO);
             Toast.makeText(_context, "BANCO CRIADO COM SUCESSO!", Toast.LENGTH_LONG).show();
         } catch (SQLException erro){

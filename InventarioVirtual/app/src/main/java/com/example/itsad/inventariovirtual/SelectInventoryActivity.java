@@ -28,4 +28,5 @@ public class SelectInventoryActivity extends Activity {
         SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_1, inventarioRepository.getAll(), new String[]{"nome"}, new int[]{android.R.id.text1},0);
         mListViewInventarios.setAdapter(simpleCursorAdapter);
     }
+
 }
