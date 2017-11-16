@@ -59,6 +59,9 @@ public class InventarioRepository {
     private void ShowMessage(String mensagem){
         Toast.makeText(_context,mensagem,Toast.LENGTH_LONG).show();
     }
+    public int deleteRecord(long id){
+        return db.delete(NOME_TABELA, "_id = ?", new String[]{String.valueOf(id)});
+    }
 
 
 
