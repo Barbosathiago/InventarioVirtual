@@ -8,30 +8,50 @@ import android.view.View;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
+
+import com.example.itsad.inventariovirtual.Models.Inventario;
+import com.example.itsad.inventariovirtual.Repositorio.InventarioRepository;
+import com.example.itsad.inventariovirtual.Repositorio.ItemRepository;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class ItemActivity extends Activity {
-
-    String[] ListElements = new String[]{
-            "Faculdade",
-            "Dentista",
-            "Bar"
-    };
+    ListView mListViewItens;
+    ItemRepository itemRepository;
+    Inventario mInventario;
+    InventarioRepository inventarioRepository;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item);
-        ListView listViewItens = (ListView)findViewById(R.id.inventariosExistentes);
-        final List<String> ListElementsArrayList = new ArrayList<>(Arrays.asList(ListElements));
-        final ArrayAdapter<String> adapter = new ArrayAdapter<>(ItemActivity.this, android.R.layout.simple_list_item_1, ListElementsArrayList);
-        listViewItens.setAdapter(adapter);
+        itemRepository = new ItemRepository(this);
+        inventarioRepository = new InventarioRepository(this);
+        mListViewItens = (ListView)findViewById(R.id.inventariosExistentes);
+        Bundle extras = getIntent().getExtras();
+        String id = getIntent().getStringExtra("_id");
+        mInventario = inventarioRepository.getInventarioById(Long.parseLong(id));
+
+        updateList();
     }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        updateList();
+    }
+
+
 
     public void addItem(View view) {
         Intent intent = new Intent(this, AddItemActivity.class);
+        intent.putExtra("_id", String.valueOf(mInventario.getId()));
         startActivity(intent);
+    }
+    private void updateList(){
+        SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_1, itemRepository.getItensByInventario(mInventario.getId()), new String[]{"descricao"}, new int[]{android.R.id.text1},0);
+        mListViewItens.setAdapter(simpleCursorAdapter);
     }
 }

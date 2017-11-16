@@ -8,7 +8,8 @@ public class Item {
 
     // atributos
     private String _descricao;
-    private int _imagem;
+    private String _imagem;
+    private Inventario _inventario;
     private int _id;
 
     // Propriedades
@@ -18,10 +19,10 @@ public class Item {
     public String getDescricao(){
         return this._descricao;
     }
-    public void setImagem(int imagem){
-        imagem = _imagem;
+    public void setImagem(String imagem){
+        _imagem = imagem;
     }
-    public int getImagem(){
+    public String getImagem(){
         return this._imagem;
     }
     public void setId(int id){
@@ -30,4 +31,6 @@ public class Item {
     public int getId(){
         return this._id;
     }
+    public void setInventario(Inventario i){ _inventario = i;}
+    public Inventario getInventario(){return this._inventario;}
 }

@@ -6,7 +6,6 @@ package com.example.itsad.inventariovirtual.Models;
 
 public class Inventario {
 
-    private ItemInventario _itemInventario;
     private String _descricao;
     private String _nome;
     private int _id;
@@ -16,12 +15,6 @@ public class Inventario {
     }
     public String getDescricao(){
         return this._descricao;
-    }
-    public void setItemInventario(ItemInventario itemInventario){
-        this._itemInventario = itemInventario;
-    }
-    public ItemInventario getItemInventario(){
-        return this._itemInventario;
     }
     public void setId(int id){ this._id = id;}
     public int getId(){ return this._id; }

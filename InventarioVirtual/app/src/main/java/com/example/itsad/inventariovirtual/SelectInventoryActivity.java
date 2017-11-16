@@ -1,6 +1,7 @@
 package com.example.itsad.inventariovirtual;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -33,11 +34,22 @@ public class SelectInventoryActivity extends Activity {
                 return true;
             }
         });
+        mListViewInventarios.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                seeDetails(l);
+            }
+        });
         updateList();
     }
 
     private void updateList(){
         SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_1, inventarioRepository.getAll(), new String[]{"nome"}, new int[]{android.R.id.text1},0);
         mListViewInventarios.setAdapter(simpleCursorAdapter);
+    }
+    private void seeDetails(long l){
+        Intent intent = new Intent(this, ItemActivity.class);
+        intent.putExtra("_id", String.valueOf(l));
+        startActivity(intent);
     }
 }

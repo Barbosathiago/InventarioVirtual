@@ -45,6 +45,7 @@ public class InventoryCreationActivity extends Activity {
             i.setNome(editTextNome.getText().toString());
             int what = inventarioRepository.insert(i);
             Intent intent = new Intent(this, ItemActivity.class);
+            intent.putExtra("_id", String.valueOf(what));
             startActivity(intent);
         } catch(Exception erro){
             Toast.makeText(this, erro.getMessage(), Toast.LENGTH_LONG).show();
