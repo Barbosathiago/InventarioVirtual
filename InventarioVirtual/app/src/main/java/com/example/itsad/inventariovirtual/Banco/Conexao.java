@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
 import com.example.itsad.inventariovirtual.Repositorio.InventarioRepository;
+import com.example.itsad.inventariovirtual.Repositorio.ItemRepository;
 
 /**
  * Created by itsad on 14/11/2017.
@@ -27,6 +28,7 @@ public class Conexao extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         try {
             db.execSQL(InventarioRepository.SCRIPT_TB_INVENTARIO);
+            db.execSQL(ItemRepository.SCRIPT_TB_ITEM);
             Toast.makeText(_context, "BANCO CRIADO COM SUCESSO!", Toast.LENGTH_LONG).show();
         } catch (SQLException erro){
             Toast.makeText(_context, "ERRO " + erro.getMessage(), Toast.LENGTH_LONG).show();

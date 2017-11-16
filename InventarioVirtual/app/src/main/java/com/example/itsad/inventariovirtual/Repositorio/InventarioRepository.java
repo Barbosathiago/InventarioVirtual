@@ -46,6 +46,23 @@ public class InventarioRepository {
             db.close();
         }
     }
+
+    public Inventario getInventarioById(long id){
+        try{
+            Inventario i = new Inventario();
+            Cursor c = db.rawQuery("SELECT * FROM " + NOME_TABELA + " WHERE _id = ?", new String[]{String.valueOf(id)});
+            if(c.moveToFirst()) {
+                i.setDescricao(c.getString(c.getColumnIndex("descricao")));
+                i.setNome(c.getString(c.getColumnIndex("nome")));
+                i.setId(c.getInt(c.getColumnIndex("_id")));
+            }
+            c.close();
+            return i;
+        } catch (Exception e){
+            Toast.makeText(_context, e.getMessage(), Toast.LENGTH_LONG);
+            return null;
+        }
+    }
     public Cursor getAll(){
         return db.query(NOME_TABELA, COLUNAS, null, null, null, null, null);
     }
