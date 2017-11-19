@@ -54,13 +54,30 @@ public class ItemRepository {
         }
     }
 
+    public void updateItem(Item i){
+        try{
+            ContentValues values =getContentValues(i);
+            db.update(NOME_TABELA,values, "_id = ?", new String[]{String.valueOf(i.getId())});
+        }catch(SQLException e){
+            ShowMessage(e.getMessage());
+        } catch(Exception e){
+            ShowMessage(e.getMessage());
+        } finally {
+            conexaoOpenHelper.close();
+            db.close();
+        }
+    }
+
     public Item getItemById(long id){
         try {
-            Item i = null;
+            Item i = new Item();
             Cursor c = db.rawQuery("SELECT * FROM " + NOME_TABELA + " WHERE _id = ?", new String[]{String.valueOf(id)});
-            i.setDescricao(c.getString(cursor.getColumnIndex("descricao")));
-            i.setImagem(c.getString(cursor.getColumnIndex("imagem")));
-            i.setId(c.getInt(cursor.getColumnIndex("_id")));
+            if(c.moveToFirst()){
+                i.setDescricao(c.getString(c.getColumnIndex("descricao")));
+                i.setImagem(c.getString(c.getColumnIndex("imagem")));
+                i.setId(c.getInt(c.getColumnIndex("_id")));
+            }
+            c.close();
             return i;
         } catch (Exception e){
             ShowMessage(e.getMessage());

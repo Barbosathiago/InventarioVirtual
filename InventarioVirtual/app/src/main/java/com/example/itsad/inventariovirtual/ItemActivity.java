@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
@@ -33,6 +34,12 @@ public class ItemActivity extends Activity {
         Bundle extras = getIntent().getExtras();
         String id = getIntent().getStringExtra("_id");
         mInventario = inventarioRepository.getInventarioById(Long.parseLong(id));
+        mListViewItens.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                updateItem(l);
+            }
+        });
 
         updateList();
     }
@@ -43,7 +50,13 @@ public class ItemActivity extends Activity {
         updateList();
     }
 
-
+    public void updateItem(long id){
+        Intent intent = new Intent(this, AddItemActivity.class);
+        intent.putExtra("_id", String.valueOf(mInventario.getId()));
+        intent.putExtra("_idItem", String.valueOf(id));
+        intent.putExtra(AddItemActivity.ISUPDATE, "UPDATE");
+        startActivity(intent);
+    }
 
     public void addItem(View view) {
         Intent intent = new Intent(this, AddItemActivity.class);

@@ -30,7 +30,7 @@ public class PictureTaker extends Activity {
 
     // Método que retorna a imagem através do caminho da mesma
     public Bitmap getPicture(String path){
-        File imgFile = new File(mCurrentPhotoPath);
+        File imgFile = new File(path);
         if(imgFile.exists()){
             Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
             return myBitmap;

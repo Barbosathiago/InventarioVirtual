@@ -19,6 +19,7 @@ import com.example.itsad.inventariovirtual.Repositorio.ItemRepository;
 
 public class AddItemActivity extends PictureTaker {
 
+    public static final String ISUPDATE="ISUPDATE";
     ImageView mImageView;
     EditText mEditText;
     Button mButton;
@@ -26,6 +27,7 @@ public class AddItemActivity extends PictureTaker {
     ItemRepository itemRepository;
     InventarioRepository inventarioRepository;
     Inventario mInventario;
+    private Item _updateItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,7 @@ public class AddItemActivity extends PictureTaker {
         mEditText = (EditText)findViewById(R.id.editTextDescricao);
         mButton = (Button)findViewById(R.id.buttonAdd);
 
+
         itemRepository = new ItemRepository(this);
         mImageView.setOnClickListener(new AdapterView.OnClickListener(){
             @Override
@@ -45,12 +48,33 @@ public class AddItemActivity extends PictureTaker {
                 path = takePicture();
             }
         });
-        mButton.setOnClickListener(new AdapterView.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                saveItem();
+        String tipo = getIntent().getStringExtra(ISUPDATE);
+        if (getIntent().getStringExtra(ISUPDATE) != null )
+        {
+            if(getIntent().getStringExtra(ISUPDATE).equals("UPDATE")) {
+                _updateItem = new Item();
+                _updateItem = itemRepository.getItemById(Long.parseLong(getIntent().getStringExtra("_idItem")));
+                mEditText.setText(_updateItem.getDescricao());
+                if(_updateItem.getImagem() != null) {
+                    mImageView.setImageBitmap(getPicture(_updateItem.getImagem()));
+                }
+                mButton.setText("SALVAR");
+                mButton.setOnClickListener(new AdapterView.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        updateItem();
+                    }
+                });
             }
-        });
+        } else {
+            mButton.setOnClickListener(new AdapterView.OnClickListener(){
+                @Override
+                public void onClick(View view) {
+                    saveItem();
+                }
+            });
+        }
+
     }
 
     @Override
@@ -60,6 +84,27 @@ public class AddItemActivity extends PictureTaker {
         }
     }
 
+    private void updateItem(){
+        try {
+            Item i = new Item();
+            i.setDescricao(mEditText.getText().toString());
+            if(path == null){
+                i.setImagem(_updateItem.getImagem());
+            }
+            else {
+                i.setImagem(path);
+            }
+            i.setInventario(mInventario);
+            i.setId(Integer.parseInt(getIntent().getStringExtra("_idItem")));
+            itemRepository.updateItem(i);
+            ShowMessage("Item atualizado!");
+        } catch(Exception e){
+            ShowMessage(e.getMessage());
+        } finally {
+            finish();
+        }
+
+    }
 
     private void saveItem(){
 
