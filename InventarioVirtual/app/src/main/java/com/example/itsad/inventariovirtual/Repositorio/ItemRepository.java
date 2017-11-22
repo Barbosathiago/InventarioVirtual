@@ -10,6 +10,8 @@ import android.widget.Toast;
 import com.example.itsad.inventariovirtual.Banco.Conexao;
 import com.example.itsad.inventariovirtual.Models.Item;
 
+import java.util.List;
+
 /**
  * Created by itsad on 16/11/2017.
  */
@@ -21,7 +23,8 @@ public class ItemRepository {
             "descricao text,\n" +
             "_id integer PRIMARY KEY AUTOINCREMENT,\n" +
             "imagem text,\n" +
-            "fk_inventario integer\n" +
+            "fk_inventario integer,\n" +
+            "presente integer\n" +
             ");";
     Conexao conexaoOpenHelper;
     SQLiteDatabase db;
@@ -68,6 +71,43 @@ public class ItemRepository {
         }
     }
 
+    public void setItensPresentStateByInventory(long idInventario, long state){
+        try{
+            db.rawQuery("UPDATE "+NOME_TABELA+" SET presente = ? WHERE fk_inventario = ?",new String[]{String.valueOf(state), String.valueOf(idInventario)} );
+        } catch (SQLException e){
+            ShowMessage(e.getMessage());
+        }
+    }
+    public void setItemPresentState(long id, long state){
+        try{
+            db.rawQuery("UPDATE "+NOME_TABELA+" SET presente = ? WHERE _id = ?",new String[]{String.valueOf(state), String.valueOf(id)} );
+        }
+        catch(SQLException e){
+            ShowMessage(e.getMessage());
+        }
+    }
+
+    public void toggleItemPresentState(long id){
+        try{
+            Cursor c = db.rawQuery("SELECT presente FROM " + NOME_TABELA + " WHERE _id = ?", new String[]{String.valueOf(id)});
+            c.moveToFirst();
+            ContentValues v = new ContentValues();
+            if(c.getInt(c.getColumnIndex("presente")) == Item.FALSE) {
+
+                v.put("presente", Item.TRUE);
+                db.update(NOME_TABELA,v, "_id = ?", new String[]{String.valueOf(id)});
+                //db.rawQuery("UPDATE " + NOME_TABELA + " SET presente = "+ String.valueOf(Item.TRUE) +" WHERE _id = " + String.valueOf(id), null);
+            } else {
+                //db.rawQuery("UPDATE " + NOME_TABELA + " SET presente = ? WHERE _id = ?", new String[]{ String.valueOf(Item.FALSE), String.valueOf(id)});
+                v.put("presente", Item.FALSE);
+                db.update(NOME_TABELA,v, "_id = ?", new String[]{String.valueOf(id)});
+            }
+        }
+        catch(SQLException e){
+            ShowMessage(e.getMessage());
+        }
+    }
+
     public Item getItemById(long id){
         try {
             Item i = new Item();
@@ -76,6 +116,7 @@ public class ItemRepository {
                 i.setDescricao(c.getString(c.getColumnIndex("descricao")));
                 i.setImagem(c.getString(c.getColumnIndex("imagem")));
                 i.setId(c.getInt(c.getColumnIndex("_id")));
+                i.setPresente(c.getInt(c.getColumnIndex("presente")));
             }
             c.close();
             return i;
@@ -105,6 +146,7 @@ public class ItemRepository {
         values.put("descricao", i.getDescricao());
         values.put("imagem", i.getImagem());
         values.put("fk_inventario", i.getInventario().getId());
+        values.put("presente", i.getPresente());
         return values;
     }
 

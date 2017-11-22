@@ -67,4 +67,16 @@ public class ItemActivity extends Activity {
         SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_1, itemRepository.getItensByInventario(mInventario.getId()), new String[]{"descricao"}, new int[]{android.R.id.text1},0);
         mListViewItens.setAdapter(simpleCursorAdapter);
     }
+
+    public void StartMonitoring(View view) {
+        Intent intent = new Intent(this, MonitoringActivity.class);
+        intent.putExtra("_idInventario", String.valueOf(mInventario.getId()));
+        startActivity(intent);
+    }
+
+    public void finalizarMonitoramento(View view) {
+        Intent intent = new Intent(this, CheckItensActivity.class);
+        intent.putExtra("_idInventario", String.valueOf(mInventario.getId()));
+        startActivity(intent);
+    }
 }
