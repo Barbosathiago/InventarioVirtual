@@ -8,10 +8,13 @@ import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
+import com.example.itsad.inventariovirtual.Helpers.StateRecognizerActivity;
 import com.example.itsad.inventariovirtual.Models.Inventario;
+import com.example.itsad.inventariovirtual.Models.Item;
 import com.example.itsad.inventariovirtual.Repositorio.InventarioRepository;
 import com.example.itsad.inventariovirtual.Repositorio.ItemRepository;
 
@@ -38,6 +41,13 @@ public class ItemActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 updateItem(l);
+            }
+        });
+        Button btnMonitorar = (Button) findViewById(R.id.btnMonitorar);
+        btnMonitorar.setOnClickListener(new Button.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                StartMonitoring();
             }
         });
 
@@ -68,10 +78,11 @@ public class ItemActivity extends Activity {
         mListViewItens.setAdapter(simpleCursorAdapter);
     }
 
-    public void StartMonitoring(View view) {
-        Intent intent = new Intent(this, MonitoringActivity.class);
+    public void StartMonitoring() {
+        Intent intent = new Intent(this, ManageService.class);
         intent.putExtra("_idInventario", String.valueOf(mInventario.getId()));
-        startActivity(intent);
+        intent.putExtra("TIPO", "INICIAR");
+        startService(intent);
     }
 
     public void finalizarMonitoramento(View view) {

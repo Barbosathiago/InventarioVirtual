@@ -38,24 +38,59 @@ public class CheckItensActivity extends Activity {
         btnFinalizar = (Button) findViewById(R.id.btnTerminarOcorrencia);
         inventarioId = getIntent().getStringExtra("_idInventario");
         mItemRepository = new ItemRepository(this);
-        itensCursor = mItemRepository.getItensByInventario(Long.parseLong(inventarioId));
-        UpdateList();
-        if (!checaVerificados()){
-            btnFinalizar.setEnabled(false);
-        }
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mItemRepository.setItensPresentStateByInventory(Long.parseLong(getIntent().getStringExtra("_idInventario")), Item.FALSE);
+        btnFinalizar.setOnClickListener(new Button.OnClickListener(){
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                mItemRepository.toggleItemPresentState(l);
-                itensCursor = mItemRepository.getItensByInventario(Long.parseLong(inventarioId));
-                if (checaVerificados()){
-                    btnFinalizar.setEnabled(true);
-                }
-                else{
-                    btnFinalizar.setEnabled(false);
-                }
+            public void onClick(View view) {
+                Intent i = new Intent(CheckItensActivity.this, ManageService.class);
+                i.putExtra("TIPO", "FINALIZAR");
+                i.putExtra("_idInventario", inventarioId);
+                startService(i);
             }
         });
+
+        String value = getIntent().getStringExtra("created");
+        if(value != null){
+            if(getIntent().getStringExtra("created").equals("true")){
+
+
+                UpdateList();
+
+                if (!checaVerificados()) {
+                    btnFinalizar.setEnabled(false);
+                }
+                mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        mItemRepository.toggleItemPresentState(l);
+                        itensCursor = mItemRepository.getItensByInventario(Long.parseLong(inventarioId));
+                        if (checaVerificados()) {
+                            btnFinalizar.setEnabled(true);
+                        } else {
+                            btnFinalizar.setEnabled(false);
+                        }
+                    }
+                });
+            }
+        }
+        else {
+            UpdateList();
+            if (!checaVerificados()) {
+                btnFinalizar.setEnabled(false);
+            }
+            mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    mItemRepository.toggleItemPresentState(l);
+                    itensCursor = mItemRepository.getItensByInventario(Long.parseLong(inventarioId));
+                    if (checaVerificados()) {
+                        btnFinalizar.setEnabled(true);
+                    } else {
+                        btnFinalizar.setEnabled(false);
+                    }
+                }
+            });
+        }
     }
 
     private void UpdateList(){

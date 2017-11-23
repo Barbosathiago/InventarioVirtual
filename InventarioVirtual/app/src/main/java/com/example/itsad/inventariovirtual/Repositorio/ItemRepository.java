@@ -73,7 +73,9 @@ public class ItemRepository {
 
     public void setItensPresentStateByInventory(long idInventario, long state){
         try{
-            db.rawQuery("UPDATE "+NOME_TABELA+" SET presente = ? WHERE fk_inventario = ?",new String[]{String.valueOf(state), String.valueOf(idInventario)} );
+            ContentValues v = new ContentValues();
+            v.put("presente", state);
+            db.update(NOME_TABELA,v, "fk_inventario = ?", new String[]{String.valueOf(idInventario)});
         } catch (SQLException e){
             ShowMessage(e.getMessage());
         }

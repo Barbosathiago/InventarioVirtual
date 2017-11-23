@@ -5,6 +5,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.NotificationCompat;
@@ -41,7 +43,12 @@ public class ActivityRecognizerService extends IntentService{
             builder.setContentText("Não está se esquecendo de nada?");
             builder.setSmallIcon(R.mipmap.ic_launcher);
             builder.setContentTitle("Cheque seus itens!");
+            builder.setAutoCancel(true);
+            builder.setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 });
+            builder.setLights(Color.RED, 3000, 3000);
+
             Intent resultIntent = new Intent(this, CheckItensActivity.class);
+            resultIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             resultIntent.putExtra("_idInventario", id);
             TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
             stackBuilder.addParentStack(CheckItensActivity.class);
@@ -50,6 +57,7 @@ public class ActivityRecognizerService extends IntentService{
             builder.setContentIntent(resultPendingIntent);
             NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             mNotificationManager.notify(0, builder.build());
+
 
         }
     }

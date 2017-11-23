@@ -39,9 +39,11 @@
         <activity android:name=".SelectInventoryActivity" />
 
         <service android:name=".ActivityRecognizerService" />
+        <service android:name=".ManageService" />
 
-        <activity android:name=".MonitoringActivity" />
-        <activity android:name=".CheckItensActivity"></activity>
+        <activity android:name=".CheckItensActivity"
+            android:launchMode="singleTask"
+            ></activity>
     </application>
 
 </manifest>
