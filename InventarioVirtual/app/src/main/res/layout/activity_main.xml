@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:src="@mipmap/ic_logo"
+        android:src="@drawable/icon_logo_png"
         android:adjustViewBounds="true"
         android:maxWidth="400dp"
         android:maxHeight="400dp"
